@@ -24,4 +24,16 @@ router.post('/', (req, res, next) => {
 
 });
 
+router.get('/',(req,res,next)=>{
+
+	const repository = new ProductsRepository(MONGODB_URL);
+	repository.getAll((err,products)=>{
+		if(err){
+			return res.status(err.status).send(err);
+		}
+		res.send(products);
+	});
+
+})
+
 module.exports = router;
