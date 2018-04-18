@@ -24,6 +24,9 @@ router.post('/', (req, res, next) => {
 
 });
 
+/**
+ * Retrive all products
+ */
 router.get('/',(req,res,next)=>{
 
 	const repository = new ProductsRepository(MONGODB_URL);
@@ -34,6 +37,21 @@ router.get('/',(req,res,next)=>{
 		res.send(products);
 	});
 
-})
+});
+
+/**
+ * Retrive 1 product by id
+ */
+router.get('/:productid',(req,res,next)=>{
+
+	const productid = req.params.productid;
+	const repository = new ProductsRepository(MONGODB_URL);
+	repository.getById( productid,(err,product)=>{
+		if(err){
+			return res.status(err.status).send(err);
+		}
+		res.status(200).json(product);
+	});
+});
 
 module.exports = router;

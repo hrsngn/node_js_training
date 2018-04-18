@@ -86,6 +86,31 @@ class ProductRepository{
             callback(null,products);
         });
     }
+
+    getById(id,callback){
+        mongoose.connect(this.mongoDBUrl);
+        const db = mongoose.connection;
+
+        db.on('error',(err)=>{
+            console.log('[ERROR] - ',err);
+            callback({
+                error:err,
+                message:'unable to connect to database',
+                status : 500
+            })
+        });
+
+        Product.findById(id,(err,product) => {
+            mongoose.disconnect();
+
+            if(err) {
+                console.log('[ERROR]- ProductRepository.getAll Details : \n');
+                return callback(err);
+            }
+
+            callback(null,product);
+        });
+    }
 };
 
 
